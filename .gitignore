@@ -20,3 +20,6 @@ input.txt
 
 # Unignore files in the template/ directory
 !template/*
+
+# Cookies
+.session
