@@ -17,3 +17,6 @@
 # Input files
 test.txt
 input.txt
+
+# Unignore files in the template/ directory
+!template/*
