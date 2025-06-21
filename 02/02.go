@@ -3,19 +3,14 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strconv"
 	"strings"
 	"time"
 )
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-func part1(file_name string) int {
+func Part1(file io.Reader) (int, error) {
 	valid_id_sum := 0
 
 	total_cubes := map[string]int{
@@ -23,9 +18,6 @@ func part1(file_name string) int {
 		"green": 13,
 		"blue":  14,
 	}
-
-	file, err := os.Open(file_name)
-	check(err)
 
 	scanner := bufio.NewScanner(file)
 
@@ -43,7 +35,9 @@ func part1(file_name string) int {
 			for _, color := range colors {
 				color_draw := strings.Split(color, " ")
 				color_count, err := strconv.Atoi(color_draw[0])
-				check(err)
+				if err != nil {
+					return 0, err
+				}
 
 				if color_count > total_cubes[color_draw[1]] {
 					valid = false
@@ -54,19 +48,18 @@ func part1(file_name string) int {
 
 		if valid {
 			game_id, err := strconv.Atoi(strings.Split(game[0], " ")[1])
-			check(err)
+			if err != nil {
+				return 0, err
+			}
 			valid_id_sum += game_id
 		}
 	}
 
-	return valid_id_sum
+	return valid_id_sum, nil
 }
 
-func part2(file_name string) int {
+func Part2(file io.Reader) (int, error) {
 	total_power := 0
-
-	file, err := os.Open(file_name)
-	check(err)
 
 	scanner := bufio.NewScanner(file)
 
@@ -85,7 +78,9 @@ func part2(file_name string) int {
 			for _, color := range colors {
 				color_draw := strings.Split(color, " ")
 				color_count, err := strconv.Atoi(color_draw[0])
-				check(err)
+				if err != nil {
+					return 0, err
+				}
 
 				game_min_cubes[color_draw[1]] = max(game_min_cubes[color_draw[1]], color_count)
 			}
@@ -98,7 +93,7 @@ func part2(file_name string) int {
 		total_power += power
 	}
 
-	return total_power
+	return total_power, nil
 }
 
 func main() {
@@ -107,9 +102,24 @@ func main() {
 	args := os.Args[1:]
 	file_path := args[0]
 
-	fmt.Println("Part 1:", part1(file_path))
+	file, err := os.Open(file_path)
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println("Part 2:", part2(file_path))
+	p1, err := Part1(file)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Part 1:", p1)
+
+	file.Seek(0, 0)
+
+	p2, err := Part2(file)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Part 2:", p2)
 
 	duration := time.Since(start)
 

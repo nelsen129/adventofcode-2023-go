@@ -3,22 +3,14 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"time"
 	"unicode"
 )
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-func part1(file_name string) int {
+func Part1(file io.Reader) int {
 	calibration_value := 0
-
-	file, err := os.Open(file_name)
-	check(err)
 
 	scanner := bufio.NewScanner(file)
 
@@ -47,7 +39,7 @@ func part1(file_name string) int {
 	return calibration_value
 }
 
-func part2(file_name string) int {
+func Part2(file io.Reader) int {
 	calibration_value := 0
 
 	digit_strings := map[string]int{
@@ -62,9 +54,6 @@ func part2(file_name string) int {
 		"nine":  9,
 		"zero":  0,
 	}
-
-	file, err := os.Open(file_name)
-	check(err)
 
 	scanner := bufio.NewScanner(file)
 
@@ -127,9 +116,16 @@ func main() {
 	args := os.Args[1:]
 	file_path := args[0]
 
-	fmt.Println("Part 1:", part1(file_path))
+	file, err := os.Open(file_path)
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println("Part 2:", part2(file_path))
+	fmt.Println("Part 1:", Part1(file))
+
+	file.Seek(0, 0)
+
+	fmt.Println("Part 2:", Part2(file))
 
 	duration := time.Since(start)
 

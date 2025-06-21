@@ -2,44 +2,29 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"time"
 )
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-func part1(file_name string) int {
-	total_score := 0
-
-	// file, err := os.Open(file_name)
-	// check(err)
-
+func Part1(file io.Reader) (result int) {
 	// scanner := bufio.NewScanner(file)
 
 	// for scanner.Scan() {
 	// 	line := scanner.Text()
 	// }
 
-	return total_score
+	return result
 }
 
-func part2(file_name string) int {
-	total_score := 0
-
-	// file, err := os.Open(file_name)
-	// check(err)
-
+func Part2(file io.Reader) (result int) {
 	// scanner := bufio.NewScanner(file)
 
 	// for scanner.Scan() {
 	// 	line := scanner.Text()
 	// }
 
-	return total_score
+	return result
 }
 
 func main() {
@@ -48,9 +33,16 @@ func main() {
 	args := os.Args[1:]
 	file_path := args[0]
 
-	fmt.Println("Part 1:", part1(file_path))
+	file, err := os.Open(file_path)
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println("Part 2:", part2(file_path))
+	fmt.Println("Part 1:", Part1(file))
+
+	file.Seek(0, 0)
+
+	fmt.Println("Part 2:", Part2(file))
 
 	duration := time.Since(start)
 
