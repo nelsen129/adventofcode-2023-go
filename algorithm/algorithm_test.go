@@ -59,3 +59,32 @@ func TestFindOverlapInSortedLists(t *testing.T) {
 
 	}
 }
+
+func TestBinarySearchSorted(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name string
+		inT  int
+		inN  []int
+		outI int
+		outB bool
+	}{
+		{`empty`, 10, []int{}, 0, false},
+		{`missing: begin`, 0, []int{2, 4, 6, 8}, 0, false},
+		{`missing: mid`, 5, []int{2, 4, 6, 8}, 2, false},
+		{`missing: end`, 10, []int{2, 4, 6, 8}, 4, false},
+		{`exists`, 5, []int{1, 3, 5, 7}, 2, true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			gotI, gotB := algorithm.BinarySearchSorted(tt.inT, tt.inN)
+			if gotI != tt.outI || gotB != tt.outB {
+				t.Errorf(`got %d, %v, want %d, %v`, gotI, gotB, tt.outI, tt.outB)
+			}
+		})
+
+	}
+}

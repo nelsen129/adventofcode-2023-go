@@ -72,3 +72,25 @@ func FindOverlapInSortedLists(nums1, nums2 []int) []int {
 
 	return overlap
 }
+
+func BinarySearchSorted(target int, nums []int) (int, bool) {
+	if nums == nil || len(nums) == 0 {
+		return 0, false
+	}
+
+	lo := 0
+	hi := len(nums)
+
+	for lo < hi {
+		idx := (lo + hi) / 2
+		if nums[idx] == target {
+			return idx, true
+		}
+		if nums[idx] > target {
+			hi = idx
+			continue
+		}
+		lo = idx + 1
+	}
+	return lo, false
+}
