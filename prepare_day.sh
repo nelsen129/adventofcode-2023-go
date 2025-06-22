@@ -13,7 +13,7 @@ DAY=$1
 
 cp -rT template $DAY
 mv $DAY/template.go $DAY/$DAY.go
-mv $DAY/template_test.go $DAY/$DAY_test.go
+mv $DAY/template_test.go $DAY/$DAY\_test.go
 find $DAY -type f -print0 | xargs -0 sed -i "s/template/$DAY/g"
 
 curl -b .session "https://adventofcode.com/2023/day/$((10#$DAY))/input" -o "$DAY/input.txt"
